@@ -6,7 +6,7 @@ use rocket::http::{ContentType, Status};
 #[test]
 fn index() {
     let client = Client::tracked(rocket()).expect("valid rocket instance");
-    let response = client.get(uri!(super::index)).dispatch();
+    let response = client.get("/").dispatch();
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.into_string().unwrap(), "Hello, world!");
 }
@@ -32,4 +32,16 @@ fn post_and_get_item() {
         .dispatch();
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.into_string().unwrap(), "{\"value\": \"testvalue\"}");
+}
+
+#[test]
+fn get_nonexistant_item_returns_empty_string() {
+    let client = Client::tracked(rocket()).expect("valid rocket instance");
+
+    // GET item
+    let response = client.get("/item/doesnotexist")
+        .header(ContentType::JSON)
+        .dispatch();
+    assert_eq!(response.status(), Status::Ok);
+    assert_eq!(response.into_string().unwrap(), "{\"value\": \"\"}");
 }
