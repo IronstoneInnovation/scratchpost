@@ -1,3 +1,14 @@
+//! # scratchpost
+//! _A simple key/value cache server built in Rust._
+//! 
+//! ## Installation
+//!
+//! ## Settings
+//!
+//! ## Usage
+//! 
+//! ## License
+//!
 #[cfg(test)] mod api_tests;
 #[cfg(test)] mod cache_tests;
 
