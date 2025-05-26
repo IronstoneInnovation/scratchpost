@@ -1,6 +1,5 @@
 use crate::simple_cache;
 
-use super::SimpleCache;
 
 #[test]
 fn test_max_items() {
@@ -13,4 +12,5 @@ fn test_max_items() {
     assert_eq!(cache.size(), 10);
     cache.push("anotherkey".to_string(), "anothertestvalue".to_string());
     assert_eq!(cache.size(), 10);
+    assert_eq!(cache.get("testvalue1".to_string()), "");
 }
