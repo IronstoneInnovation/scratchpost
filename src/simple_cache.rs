@@ -7,6 +7,18 @@ use queues::*;
 // Use this value if not set in envvars:
 pub const DEFAULT_MAX_ITEMS: usize = 10;
 
+pub fn get_max_items() -> usize {
+    match env::var("SCRATCHPOST_MAX_ITEMS") {
+        Ok(str_value) => {
+            match str_value.parse::<usize>() {
+                Ok(value) => value,
+                Err(_) => DEFAULT_MAX_ITEMS
+            }
+        },
+        Err(_) => DEFAULT_MAX_ITEMS
+    }
+}
+
 pub struct ExpirationQueue {
     q: Queue<String>,
 }
@@ -15,15 +27,7 @@ impl ExpirationQueue {
     fn push(&mut self, key: String) -> Option<String> {
         self.q.add(key).expect("Couldn't push key to empty Expiration Queue");
         
-        let max_items = match env::var("SCRATCHPOST_MAX_ITEMS") {
-            Ok(str_value) => {
-                match str_value.parse::<usize>() {
-                    Ok(value) => value,
-                    Err(_) => DEFAULT_MAX_ITEMS
-                }
-            },
-            Err(_) => DEFAULT_MAX_ITEMS
-        };
+        let max_items = get_max_items();
 
         if self.q.size() > max_items {
             let expired_key = self.q.remove().expect("Tried to remove key from empty Expiration Queue");
