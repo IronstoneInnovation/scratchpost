@@ -52,7 +52,7 @@ impl SimpleCache {
 
 fn main() {
 
-    let mut expiration_queue= ExpirationQueue {
+    let expiration_queue= ExpirationQueue {
         q: queue![],
     };
     
@@ -62,5 +62,7 @@ fn main() {
     };
 
     simple_cache.push("hello".to_string(), "world!".to_string());
+    simple_cache.get("hello".to_string());
+    
 
 }
