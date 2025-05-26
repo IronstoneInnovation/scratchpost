@@ -32,7 +32,7 @@ fn post_item(simple_cache: &State<Mutex<SimpleCache>>, item: Json<Item<'_>>) -> 
 #[get("/item/<key>")]
 fn get_item(simple_cache: &State<Mutex<SimpleCache>>, key: &str) -> (Status, (ContentType, String)) {
     let mut cache = simple_cache.lock().expect("cache lock poisoned during GET");
-    let body = format!("{{ \"value\": \"{:?}\" }}", cache.get(key.to_string()));
+    let body = format!("{{ \"value\": \"{}\" }}", cache.get(key.to_string()));
     (Status::Ok, (ContentType::JSON, body))
 }
 
