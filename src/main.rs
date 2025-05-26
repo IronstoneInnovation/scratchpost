@@ -4,8 +4,7 @@ extern crate rocket;
 use std::sync::Mutex;
 use rocket::serde::{Deserialize, json::Json};
 use rocket::State;
-use rocket::http::Status;
-use rocket::response::{content, status};
+use rocket::http::{Status, ContentType};
 use scratchpost::{new_simple_cache, SimpleCache};
 
 #[derive(Deserialize)]
@@ -22,16 +21,19 @@ fn index() -> &'static str {
 }
 
 #[post("/item", format = "application/json", data = "<item>")]
-fn post_item(simple_cache: &State<Mutex<SimpleCache>>, item: Json<Item<'_>>) -> Status {
+fn post_item(simple_cache: &State<Mutex<SimpleCache>>, item: Json<Item<'_>>) -> (Status, (ContentType, String)) {
     // TODO: Don't allow empty "" values
-    let mut cache = simple_cache.lock().expect("SimpleCache lock poisoned");
+    let mut cache = simple_cache.lock().expect("SimpleCache lock poisoned during POST");
     cache.push(item.key.to_string(), item.value.to_string());
-    Status::Ok
+    (Status::Ok, (ContentType::JSON, "{ \"msg\": \"ok\" }".to_string()))
 }
 
-#[get("/item")]
-fn get_item() -> &'static str {
-    "Get"
+
+#[get("/item/<key>")]
+fn get_item(simple_cache: &State<Mutex<SimpleCache>>, key: &str) -> (Status, (ContentType, String)) {
+    let mut cache = simple_cache.lock().expect("SimpleCache lock poisoned during GET");
+    let body = format!("{{ \"value\": \"{:?}\" }}", cache.get(key.to_string()));
+    (Status::Ok, (ContentType::JSON, body))
 }
 
 #[launch]
