@@ -50,6 +50,10 @@ impl SimpleCache {
         }
     }
 
+    pub fn size(&mut self) -> usize {
+        self.items.len()
+    }
+
 }
 
 pub fn new() -> SimpleCache {

@@ -8,7 +8,7 @@ fn index() {
     let client = Client::tracked(rocket()).expect("valid rocket instance");
     let response = client.get("/").dispatch();
     assert_eq!(response.status(), Status::Ok);
-    assert_eq!(response.into_string().unwrap(), "Hello, world!");
+    assert_eq!(response.into_string().unwrap(), "Feed me!");
 }
 
 #[test]

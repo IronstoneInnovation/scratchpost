@@ -1,4 +1,5 @@
-#[cfg(test)] mod tests;
+#[cfg(test)] mod api_tests;
+#[cfg(test)] mod cache_tests;
 
 #[macro_use]
 extern crate rocket;
@@ -20,7 +21,7 @@ struct Item<'r> {
 
 #[get("/")]
 fn index() -> &'static str {
-    "Hello, world!"
+    "Feed me!"
 }
 
 #[post("/item", format = "application/json", data = "<item>")]
