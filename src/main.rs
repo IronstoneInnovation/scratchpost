@@ -29,9 +29,22 @@ struct SimpleCache {
 }
 
 impl SimpleCache {
+
     fn get(&mut self, key: String) -> Option<&String> {
         self.items.get(&key)
     }
+
+    fn pop<'a>(&mut self, key: &'a str) -> &'a Option<&String> {
+        let mut result =  self.items.get(key);
+        match result {
+            Some(value) => {
+                self.items.remove(key);
+                result
+            }
+            None => None
+        }
+    }
+
 }
 
 fn main() {
