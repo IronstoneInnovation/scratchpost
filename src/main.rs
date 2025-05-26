@@ -2,6 +2,8 @@
 extern crate rocket;
 
 use rocket::serde::{Deserialize, json::Json};
+use rocket::State;
+use scratchpost::{new_simple_cache, SimpleCache};
 
 #[derive(Deserialize)]
 #[serde(crate = "rocket::serde")]
@@ -17,7 +19,8 @@ fn index() -> &'static str {
 }
 
 #[post("/item", format = "application/json", data = "<item>")]
-fn post_item(item: Json<Item<'_>>) -> &'static str {
+fn post_item(simple_cache: &State<SimpleCache>, item: Json<Item<'_>>) -> &'static str {
+    // TODO: Don't allow empty "" values
     "Post"
 }
 
@@ -32,4 +35,5 @@ fn rocket() -> _ {
         .mount("/", routes![index])
         .mount("/item", routes![post_item])
         .mount("/item", routes![get_item])
+        .manage(new_simple_cache())
 }
