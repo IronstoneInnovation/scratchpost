@@ -42,8 +42,8 @@ Stores an item (key/value pair) in the cache.  The item is included in the reque
 
 ```json
 {
-    "key": String,
-    "value": String
+    "key": "string",
+    "value": "string"
 }
 ```
 
