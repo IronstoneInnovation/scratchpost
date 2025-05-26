@@ -2,6 +2,8 @@
 name = "scratchpost"
 version = "0.1.0"
 edition = "2021"
+description = "A simple key/value cache server built in Rust."
+license = "MIT"
 
 [dependencies]
 queues = "1.1.0"
