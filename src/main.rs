@@ -1,12 +1,35 @@
+#[macro_use]
+extern crate rocket;
 
+use rocket::serde::{Deserialize, json::Json};
 
+#[derive(Deserialize)]
+#[serde(crate = "rocket::serde")]
 
-fn main() {
+struct Item<'r> {
+    key: &'r str,
+    value: &'r str
+}
 
-    let mut s = scratchpost::new_simple_cache();
+#[get("/")]
+fn index() -> &'static str {
+    "Hello, world!"
+}
 
-    s.push("hello".to_string(), "world!".to_string());
-    s.get("hello".to_string());
+#[post("/item", format = "application/json", data = "<item>")]
+fn post_item(item: Json<Item<'_>>) -> &'static str {
+    "Post"
+}
 
+#[get("/item")]
+fn get_item() -> &'static str {
+    "Get"
+}
 
+#[launch]
+fn rocket() -> _ {
+    rocket::build()
+        .mount("/", routes![index])
+        .mount("/item", routes![post_item])
+        .mount("/item", routes![get_item])
 }
