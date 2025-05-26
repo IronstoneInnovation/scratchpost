@@ -29,9 +29,8 @@ struct SimpleCache {
 }
 
 impl SimpleCache {
-    fn get(&mut self, key: String, value: String) -> Result<> {
-
-
+    fn get(&mut self, key: String) -> Option<&String> {
+        self.items.get(&key)
     }
 }
 
