@@ -39,8 +39,8 @@ fn get_item(simple_cache: &State<Mutex<SimpleCache>>, key: &str) -> (Status, (Co
 #[launch]
 fn rocket() -> _ {
     rocket::build()
-        .mount("/", routes![index])
-        .mount("/item", routes![post_item])
-        .mount("/item", routes![get_item])
+        .mount("/", routes![index, post_item, get_item])
+        //.mount("/", routes![post_item])
+        //.mount("/", routes![get_item])
         .manage(Mutex::new(new_simple_cache()))
 }
