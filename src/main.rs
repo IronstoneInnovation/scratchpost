@@ -34,15 +34,18 @@ impl SimpleCache {
         self.items.get(&key)
     }
 
-    fn pop<'a>(&mut self, key: &'a str) -> &'a Option<&String> {
-        let mut result =  self.items.get(key);
-        match result {
-            Some(value) => {
-                self.items.remove(key);
-                result
-            }
-            None => None
+    fn push(&mut self, key: String, value: String) {
+        let key_for_expiration_queue = key.clone();
+
+        self.items.insert(key, value);
+
+        match self.expiration_queue.push(key_for_expiration_queue) {
+            Some(k) => {
+                self.items.remove(&k).expect("An unexpected error occurred: Could not removed an expired key from the Expiration Queue");
+            },
+            None => return
         }
+
     }
 
 }
@@ -53,11 +56,11 @@ fn main() {
         q: queue![],
     };
     
-    let simple_cache = SimpleCache {
+    let mut simple_cache = SimpleCache {
         expiration_queue: expiration_queue,
         items: HashMap::new(),
     };
 
-    //expiration_queue.push("hello".to_string());
+    simple_cache.push("hello".to_string(), "world!".to_string());
 
 }
