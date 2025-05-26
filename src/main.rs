@@ -1,3 +1,5 @@
+#[cfg(test)] mod tests;
+
 #[macro_use]
 extern crate rocket;
 
@@ -5,7 +7,8 @@ use std::sync::Mutex;
 use rocket::serde::{Deserialize, json::Json};
 use rocket::State;
 use rocket::http::{Status, ContentType};
-use scratchpost::{new_simple_cache, SimpleCache};
+mod simple_cache;
+use simple_cache::SimpleCache;
 
 #[derive(Deserialize)]
 #[serde(crate = "rocket::serde")]
@@ -44,5 +47,5 @@ fn get_item(simple_cache: &State<Mutex<SimpleCache>>, key: &str) -> (Status, (Co
 fn rocket() -> _ {
     rocket::build()
         .mount("/", routes![index, post_item, get_item])
-        .manage(Mutex::new(new_simple_cache()))
+        .manage(Mutex::new(simple_cache::new()))
 }

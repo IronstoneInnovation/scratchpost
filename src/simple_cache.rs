@@ -53,7 +53,7 @@ impl SimpleCache {
 
 }
 
-pub fn new_simple_cache() -> SimpleCache {
+pub fn new() -> SimpleCache {
     let expiration_queue= ExpirationQueue {
         q: queue![],
     };
