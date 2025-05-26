@@ -11,10 +11,10 @@ pub struct ExpirationQueue {
 
 impl ExpirationQueue {
     fn push(&mut self, key: String) -> Option<String> {
-        self.q.add(key).expect("An unexpected error occurred: Couldn't push key to empty Expiration Queue");
+        self.q.add(key).expect("Couldn't push key to empty Expiration Queue");
         
         if self.q.size() > MAX_ITEMS {
-            let expired_key = self.q.remove().expect("An unexpected error occurred: Tried to remove key from empty Expiration Queue");
+            let expired_key = self.q.remove().expect("Tried to remove key from empty Expiration Queue");
             Some(expired_key)
         } else {
             None
@@ -40,7 +40,7 @@ impl SimpleCache {
 
         match self.expiration_queue.push(key_for_expiration_queue) {
             Some(k) => {
-                self.items.remove(&k).expect("An unexpected error occurred: Could not removed an expired key from the Expiration Queue");
+                self.items.remove(&k).expect("Could not removed an expired key from the Expiration Queue");
             },
             None => return
         }
