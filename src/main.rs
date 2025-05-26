@@ -23,7 +23,7 @@ fn index() -> &'static str {
 #[post("/item", format = "application/json", data = "<item>")]
 fn post_item(simple_cache: &State<Mutex<SimpleCache>>, item: Json<Item<'_>>) -> (Status, (ContentType, String)) {
     // TODO: Don't allow empty "" values
-    let mut cache = simple_cache.lock().expect("SimpleCache lock poisoned during POST");
+    let mut cache = simple_cache.lock().expect("cache lock poisoned during POST");
     cache.push(item.key.to_string(), item.value.to_string());
     (Status::Ok, (ContentType::JSON, "{ \"msg\": \"ok\" }".to_string()))
 }
@@ -31,7 +31,7 @@ fn post_item(simple_cache: &State<Mutex<SimpleCache>>, item: Json<Item<'_>>) -> 
 
 #[get("/item/<key>")]
 fn get_item(simple_cache: &State<Mutex<SimpleCache>>, key: &str) -> (Status, (ContentType, String)) {
-    let mut cache = simple_cache.lock().expect("SimpleCache lock poisoned during GET");
+    let mut cache = simple_cache.lock().expect("cache lock poisoned during GET");
     let body = format!("{{ \"value\": \"{:?}\" }}", cache.get(key.to_string()));
     (Status::Ok, (ContentType::JSON, body))
 }
@@ -40,7 +40,5 @@ fn get_item(simple_cache: &State<Mutex<SimpleCache>>, key: &str) -> (Status, (Co
 fn rocket() -> _ {
     rocket::build()
         .mount("/", routes![index, post_item, get_item])
-        //.mount("/", routes![post_item])
-        //.mount("/", routes![get_item])
         .manage(Mutex::new(new_simple_cache()))
 }

@@ -29,8 +29,11 @@ pub struct SimpleCache {
 
 impl SimpleCache {
 
-    pub fn get(&mut self, key: String) -> Option<&String> {
-        self.items.get(&key)
+    pub fn get(&mut self, key: String) -> String {
+        match self.items.get(&key) {
+            Some(value) => value.to_string(),
+            None => "".to_string()
+        }
     }
 
     pub fn push(&mut self, key: String, value: String) {
