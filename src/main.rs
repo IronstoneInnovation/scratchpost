@@ -2,10 +2,9 @@
 extern crate rocket;
 
 use std::sync::Mutex;
-use std::collections::HashMap; 
 use rocket::serde::{Deserialize, json::Json};
 use rocket::State;
-use rocket::http::{Status, ContentType};
+use rocket::http::Status;
 use rocket::response::{content, status};
 use scratchpost::{new_simple_cache, SimpleCache};
 
