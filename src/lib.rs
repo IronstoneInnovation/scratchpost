@@ -3,6 +3,7 @@ extern crate queues;
 use std::collections::HashMap; 
 use queues::*;
 
+// TODO: Get MAX_ITEMS from envvars
 const MAX_ITEMS: usize = 10;
 
 pub struct ExpirationQueue {

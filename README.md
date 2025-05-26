@@ -2,5 +2,5 @@
 
 # scratchpost
 
-_A simple cache server built in Rust_
+_A simple key/value cache server built in Rust._
 

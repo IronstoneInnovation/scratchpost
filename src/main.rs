@@ -22,7 +22,11 @@ fn index() -> &'static str {
 
 #[post("/item", format = "application/json", data = "<item>")]
 fn post_item(simple_cache: &State<Mutex<SimpleCache>>, item: Json<Item<'_>>) -> (Status, (ContentType, String)) {
-    // TODO: Don't allow empty "" values
+    // Don't allow empty "" values
+    if item.value == "".to_string() {
+        return (Status::BadRequest, (ContentType::JSON, "{ \"msg\": \"empty values are not allowed\" }".to_string()))
+    }
+    // Otherwise push key/value to cache
     let mut cache = simple_cache.lock().expect("cache lock poisoned during POST");
     cache.push(item.key.to_string(), item.value.to_string());
     (Status::Ok, (ContentType::JSON, "{ \"msg\": \"ok\" }".to_string()))
