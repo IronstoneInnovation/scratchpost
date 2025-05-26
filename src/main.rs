@@ -5,6 +5,8 @@ use std::sync::Mutex;
 use std::collections::HashMap; 
 use rocket::serde::{Deserialize, json::Json};
 use rocket::State;
+use rocket::http::{Status, ContentType};
+use rocket::response::{content, status};
 use scratchpost::{new_simple_cache, SimpleCache};
 
 #[derive(Deserialize)]
@@ -21,11 +23,11 @@ fn index() -> &'static str {
 }
 
 #[post("/item", format = "application/json", data = "<item>")]
-fn post_item(simple_cache: &State<Mutex<SimpleCache>>, item: Json<Item<'_>>) -> &'static str {
+fn post_item(simple_cache: &State<Mutex<SimpleCache>>, item: Json<Item<'_>>) -> Status {
     // TODO: Don't allow empty "" values
     let mut cache = simple_cache.lock().expect("SimpleCache lock poisoned");
     cache.push(item.key.to_string(), item.value.to_string());
-    "Post"
+    Status::Ok
 }
 
 #[get("/item")]
