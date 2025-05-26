@@ -5,6 +5,7 @@ use rocket::http::{ContentType, Status};
 
 #[test]
 fn index() {
+    // Test GET / returns the correct response
     let client = Client::tracked(rocket()).expect("valid rocket instance");
     let response = client.get("/").dispatch();
     assert_eq!(response.status(), Status::Ok);
@@ -13,9 +14,10 @@ fn index() {
 
 #[test]
 fn post_and_get_item() {
+    // Test that we can POST a new item to /item and read it back using GET /item/<key>
     let client = Client::tracked(rocket()).expect("valid rocket instance");
 
-    // POST item
+    // POST new item
     let response = client.post("/item")
         .header(ContentType::JSON)
         .body(r##"{
@@ -36,6 +38,7 @@ fn post_and_get_item() {
 
 #[test]
 fn get_nonexistant_item_returns_empty_string() {
+    // Test that getting a non-existant item returns an empty string value
     let client = Client::tracked(rocket()).expect("valid rocket instance");
 
     // GET item
