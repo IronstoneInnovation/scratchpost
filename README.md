@@ -4,3 +4,10 @@
 
 _A simple key/value cache server built in Rust._
 
+## Installation
+
+## Settings
+
+## Usage
+
+## License
