@@ -1,7 +1,8 @@
 
 use super::rocket;
 use rocket::local::blocking::Client;
-use rocket::http::Status;
+use rocket::http::{ContentType, Status};
+
 #[test]
 fn index() {
     let client = Client::tracked(rocket()).expect("valid rocket instance");
@@ -9,10 +10,26 @@ fn index() {
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.into_string().unwrap(), "Hello, world!");
 }
-//#[test]
-//fn non_existant_items_return_empty_string() {
-//    let client = Client::tracked(rocket()).expect("valid rocket instance");
-//    let mut response = client.get(uri!(super::hello)).dispatch();
-//    assert_eq!(response.status(), Status::Ok);
-//    assert_eq!(response.into_string().unwrap(), "Hello, world!");
-//}
+
+#[test]
+fn post_and_get_item() {
+    let client = Client::tracked(rocket()).expect("valid rocket instance");
+
+    // POST item
+    let response = client.post("/item")
+        .header(ContentType::JSON)
+        .body(r##"{
+            "key": "testkey",
+            "value": "testvalue"
+        }"##)
+        .dispatch();
+    assert_eq!(response.status(), Status::Ok);
+    assert_eq!(response.into_string().unwrap(), "{\"msg\": \"ok\"}");
+
+    // GET item
+    let response = client.get("/item/testkey")
+        .header(ContentType::JSON)
+        .dispatch();
+    assert_eq!(response.status(), Status::Ok);
+    assert_eq!(response.into_string().unwrap(), "{\"value\": \"testvalue\"}");
+}

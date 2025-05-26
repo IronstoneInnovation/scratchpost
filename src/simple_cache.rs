@@ -48,7 +48,6 @@ impl SimpleCache {
             },
             None => return
         }
-
     }
 
 }
