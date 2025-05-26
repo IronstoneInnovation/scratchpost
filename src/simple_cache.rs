@@ -9,7 +9,7 @@ use std::collections::HashMap;
 use queues::*;
 
 /// This defines the default cache size if the SCRATCHPOST_MAX_ITEMS envvar is not set.
-pub const DEFAULT_MAX_ITEMS: usize = 10;
+pub const DEFAULT_MAX_ITEMS: usize = 1000;
 
 /// Return the maximum number of items the cache can store.  This will be the value of
 /// the SCRATCHPOST_MAX_ITEMS envvar if it is set correctly, otherwise we'll use DEFAULT_MAX_ITEMS.
