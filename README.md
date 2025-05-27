@@ -47,7 +47,7 @@ Stores an item (key/value pair) in the cache.  The item is included in the reque
 }
 ```
 
-Note that an empty string value will not be accepted and status 400 is returned.
+Note that an empty string value will not be accepted and status 400 will be returned.
 
 If successful, http status 200 is returned.
 

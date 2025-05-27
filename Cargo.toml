@@ -4,6 +4,9 @@ version = "0.1.0"
 edition = "2021"
 description = "A simple key/value cache server built in Rust."
 license = "MIT"
+repository = "https://github.com/IronstoneInnovation/scratchpost"
+keywords = ["http", "cache"]
+categories = ["web-programming::http-server"]
 
 [dependencies]
 queues = "1.1.0"
